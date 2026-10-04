@@ -1,14 +1,15 @@
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 
+const redis = Redis.fromEnv();
 const LIST_KEY = "applications";
 
 export async function getApplications() {
-  const list = await kv.get(LIST_KEY);
+  const list = await redis.get(LIST_KEY);
   return list || [];
 }
 
 export async function saveApplications(list) {
-  await kv.set(LIST_KEY, list);
+  await redis.set(LIST_KEY, list);
 }
 
 export async function addApplication(entry) {
